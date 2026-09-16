@@ -1,12 +1,14 @@
 def is_index_up(hand):
-    """
-    Check whether the index finger is extended.
+    return hand[8].y < hand[6].y
 
-    MediaPipe landmark IDs:
-    6  = index PIP joint
-    8  = index fingertip
-    """
-    index_pip = hand[6]
-    index_tip = hand[8]
 
-    return index_tip.y < index_pip.y
+def is_middle_up(hand):
+    return hand[12].y < hand[10].y
+
+
+def is_ring_up(hand):
+    return hand[16].y < hand[14].y
+
+
+def is_pinky_up(hand):
+    return hand[20].y < hand[18].y
