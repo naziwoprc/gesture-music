@@ -3,7 +3,7 @@ import mediapipe as mp
 
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from gesture_recognizer import is_index_up, is_middle_up, is_ring_up, is_pinky_up
+from gesture_recognizer import recognize_gesture
 
 # -----------------------------
 # Configuration
@@ -68,12 +68,9 @@ while True:
     if result.hand_landmarks:
         hand = result.hand_landmarks[0]
 
-        index = is_index_up(hand)
-        middle = is_middle_up(hand)
-        ring = is_ring_up(hand)
-        pinky = is_pinky_up(hand)
+        gesture = recognize_gesture(hand)
 
-        print(f"Index: {index}, Middle: {middle}, Ring: {ring}, Pinky: {pinky}")
+        print(f"Gesture: {gesture}")
 
         for hand in result.hand_landmarks:
 
