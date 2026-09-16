@@ -3,6 +3,7 @@ import mediapipe as mp
 
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
+from gesture_recognizer import is_index_up
 
 # -----------------------------
 # Configuration
@@ -65,6 +66,14 @@ while True:
 
     # Draw landmarks
     if result.hand_landmarks:
+        hand = result.hand_landmarks[0]
+
+        index_up = is_index_up(hand)
+
+        if index_up:
+            print("index up")
+        else:
+            print("index down")
 
         for hand in result.hand_landmarks:
 
