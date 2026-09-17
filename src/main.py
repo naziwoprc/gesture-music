@@ -12,6 +12,8 @@ from gesture_recognizer import (
     is_pinky_up,
 )
 
+from note_mapper import gesture_to_note
+
 # -----------------------------
 # Configuration
 # -----------------------------
@@ -93,7 +95,9 @@ while True:
         if gesture_count >= STABILITY_FRAMES:
             if gesture != stable_gesture:
                 stable_gesture = gesture
-                print(f"Stable gesture detected: {stable_gesture}")
+                note = gesture_to_note(stable_gesture)
+
+                print(f"Stable gesture detected: {stable_gesture} → Note: {note}")
 
         for hand in result.hand_landmarks:
 
