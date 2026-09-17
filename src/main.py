@@ -3,7 +3,14 @@ import mediapipe as mp
 
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from gesture_recognizer import recognize_gesture
+from gesture_recognizer import (
+    recognize_gesture,
+    is_thumb_up,
+    is_index_up,
+    is_middle_up,
+    is_ring_up,
+    is_pinky_up,
+)
 
 # -----------------------------
 # Configuration
@@ -44,6 +51,12 @@ if not camera.isOpened():
 # Main loop
 # -----------------------------
 
+last_gesture = None
+stable_gesture = None
+gesture_count = 0
+
+STABILITY_FRAMES = 5
+
 while True:
 
     success, frame = camera.read()
@@ -67,10 +80,20 @@ while True:
     # Draw landmarks
     if result.hand_landmarks:
         hand = result.hand_landmarks[0]
+        handedness = result.handedness[0][0].category_name
 
-        gesture = recognize_gesture(hand)
+        gesture = recognize_gesture(hand, handedness)
 
-        print(f"Gesture: {gesture}")
+        if gesture == last_gesture:
+            gesture_count += 1
+        else:
+            gesture_count = 1
+            last_gesture = gesture
+
+        if gesture_count >= STABILITY_FRAMES:
+            if gesture != stable_gesture:
+                stable_gesture = gesture
+                print(f"Stable gesture detected: {stable_gesture}")
 
         for hand in result.hand_landmarks:
 
